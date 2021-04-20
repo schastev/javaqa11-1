@@ -3,9 +3,6 @@ package ru.netology.manager;
 import ru.netology.domain.MovieItem;
 import ru.netology.repository.MovieRepository;
 
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doReturn;
-
 public class MovieManager {
     int maxNumber = 10;
 
@@ -41,7 +38,6 @@ public class MovieManager {
     }
 
     public void removeById(int id) {
-        doCallRealMethod().when(repository).removeById(id);
         repository.removeById(id);
     }
 

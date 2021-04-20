@@ -2,8 +2,6 @@ package ru.netology.repository;
 
 import ru.netology.domain.MovieItem;
 
-import static org.mockito.Mockito.doReturn;
-
 public class MovieRepository {
     private MovieItem[] items = new MovieItem[0];
 
@@ -21,8 +19,6 @@ public class MovieRepository {
     }
 
     public MovieItem findById(int id) {
-        doReturn(items).when(this).findAll();
-        items = findAll();
         int j = items.length;//this throws an NPE because items is null!
         for (int i = 0; i < j; i++) {
             if (items[i].getId() == id) {
@@ -33,8 +29,6 @@ public class MovieRepository {
     }
 
     public void removeById(int id) {
-        doReturn(items).when(this).findAll();
-        items = findAll();
         int length = items.length - 1;
         MovieItem[] tmp = new MovieItem[length];
         int index = 0;
