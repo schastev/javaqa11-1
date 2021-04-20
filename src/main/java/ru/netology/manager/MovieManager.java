@@ -1,32 +1,48 @@
 package ru.netology.manager;
 
 import ru.netology.domain.MovieItem;
+import ru.netology.repository.MovieRepository;
 
 public class MovieManager {
-    private MovieItem[] movies = new MovieItem[0];
     int maxNumber = 10;
 
-    public void add(MovieItem movie) {
-        MovieItem temp[] = new MovieItem[movies.length + 1];
-        System.arraycopy(movies, 0, temp, 0, movies.length);
-        temp[temp.length - 1] = movie;
-        movies = temp;
+    private MovieRepository repository;
+
+    public MovieManager(MovieRepository repository) {
+        this.repository = repository;
+    }
+
+    public void save(MovieItem movie) {
+        repository.save(movie);
     }
 
     public MovieItem[] showMaxNumberOrLess() {
+        MovieItem[] startingArray = repository.findAll();
         int len;
-        if (movies.length < maxNumber) {
-            len = movies.length;
+        if (startingArray.length < maxNumber) {
+            len = startingArray.length;
         } else {
             len = maxNumber;
         }
         MovieItem result[] = new MovieItem[len];
         int j = len - 1;
         for (int i = 0; i < len; i++) {
-            result[j] = movies[i];
+            result[j] = startingArray[i];
             j--;
         }
         return result;
+    }
+
+    public MovieItem findById(int id) {
+        return repository.findById(id);
+    }
+
+    public void removeById(int id) {
+        repository.removeById(id);
+    }
+
+    public void removeAll() {
+        repository.removeAll();
     }
 
     public MovieManager(int maxNumber) {

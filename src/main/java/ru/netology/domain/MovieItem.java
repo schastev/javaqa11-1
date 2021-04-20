@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@NoArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,9 +14,8 @@ public class MovieItem {
     private String genre;
     private boolean premiereTomorrow;
 
-
-    public MovieItem(String name) {
-        this.name = name;
+    public MovieItem(int id) {
+        this.id = id;
     }
 }
 
