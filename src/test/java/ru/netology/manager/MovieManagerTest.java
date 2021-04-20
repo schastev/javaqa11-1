@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MovieManagerTest {
     private MovieManager manager = new MovieManager();
-    private MovieManager manager2 = new MovieManager(7);
     private MovieItem first = new MovieItem("first");
     private MovieItem second = new MovieItem("second");
     private MovieItem third = new MovieItem("third");
@@ -52,6 +51,7 @@ public class MovieManagerTest {
 
     @Test
     public void shouldReverseCustomNumber() {
+        MovieManager manager2 = new MovieManager(7);
         manager2.add(first);
         manager2.add(second);
         manager2.add(third);
