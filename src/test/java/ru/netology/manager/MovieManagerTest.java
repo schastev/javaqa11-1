@@ -1,6 +1,7 @@
 package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,10 +11,9 @@ import ru.netology.domain.MovieItem;
 import ru.netology.repository.MovieRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MovieManagerTest {
@@ -21,7 +21,6 @@ public class MovieManagerTest {
     private MovieRepository repository;
     @InjectMocks
     private MovieManager manager = new MovieManager(repository);
-    private MovieManager manager2 = new MovieManager(repository);
     private MovieItem first = new MovieItem(1);
     private MovieItem second = new MovieItem(2);
     private MovieItem third = new MovieItem(3);
@@ -43,11 +42,12 @@ public class MovieManagerTest {
 
     @Test
     public void shouldReverseBelowTen() {
-        MovieItem[] actual = manager.showMaxNumberOrLess();
-        MovieItem[] expected = new MovieItem[] {third, second, first};
+        MovieItem[] actual = new MovieItem[] {first, second, third};
         doReturn(actual).when(repository).findAll();
+        actual = manager.showMaxNumberOrLess();
+        MovieItem[] expected = new MovieItem[] {third, second, first};
         assertArrayEquals(actual, expected);
-        //verify(repository).findAll();
+
     }
 
     @Test
@@ -60,13 +60,16 @@ public class MovieManagerTest {
         manager.save(ninth);
         manager.save(tenth);
         manager.save(eleventh);
-        MovieItem[] actual = manager.showMaxNumberOrLess();
+        MovieItem[] actual = new MovieItem[] {first, second, third, forth, fifth, sixth, seventh, eights, ninth, tenth};
+        doReturn(actual).when(repository).findAll();
+        actual = manager.showMaxNumberOrLess();
         MovieItem[] expected = new MovieItem[] {tenth, ninth, eights, seventh, sixth, fifth, forth, third, second, first};
         assertArrayEquals(actual, expected);
     }
 
     @Test
     public void shouldReverseCustomNumber() {
+        MovieManager manager2 = new MovieManager(repository);
         manager2.save(first);
         manager2.save(second);
         manager2.save(third);
@@ -74,15 +77,40 @@ public class MovieManagerTest {
         manager2.save(fifth);
         manager2.save(sixth);
         manager2.save(seventh);
-        MovieItem[] actual = manager2.showMaxNumberOrLess();
+        MovieItem[] actual = new MovieItem[] {first, second, third, forth, fifth, sixth, seventh};
+        doReturn(actual).when(repository).findAll();
+        actual = manager2.showMaxNumberOrLess();
         MovieItem[] expected = new MovieItem[] {seventh, sixth, fifth, forth, third, second, first};
         assertArrayEquals(actual, expected);
     }
 
     @Test
     public void findByIdTest() {
-        MovieItem actual = manager.findById(2);
+        MovieItem actual = new MovieItem(1);
+        doCallRealMethod().when(repository).findById(2); //does this even do anything?
+        actual = manager.findById(2);
         MovieItem expected = second;
         assertEquals(actual, expected);
     }
+    @Test
+    public void removeByIdTest(){
+        MovieItem[] expected = new MovieItem[] {second, first};
+        MovieItem[] actual = new MovieItem[] {first, second, third};
+        doReturn(actual).when(repository).findAll();
+        doCallRealMethod().when(repository).removeById(2);
+        manager.removeById(2);
+        actual = manager.showMaxNumberOrLess();
+        assertArrayEquals(actual, expected);
+    }
+    /*@Test
+    public void saveTest() {
+
+    }
+    @Test
+    public void removeAllTest(){
+        MovieItem[] expected = new MovieItem[0];
+        MovieItem[] actual = new MovieItem[0];
+
+        assertArrayEquals(actual, expected);
+    }*/
 }
